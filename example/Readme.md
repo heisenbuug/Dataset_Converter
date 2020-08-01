@@ -1,2 +1,3 @@
-The input file here is csv.csv 
-And we got 10 xml files as output
+Input: csv.csv 
+
+Output: 10 xml files
