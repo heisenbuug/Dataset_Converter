@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotation>
+ <object>
+  <filename>w1240-p16x9-fa978043deff83fed485af12d16e39c61398fc30_jpg.rf.185d01b7e55e049c6661b8ecd49679fc.jpg</filename>
+  <width>416</width>
+  <height>416</height>
+  <class>mask</class>
+  <xmin>105</xmin>
+  <ymin>92</ymin>
+  <xmax>318</xmax>
+  <ymax>311</ymax>
+ </object>
+</annotation>
