@@ -46,7 +46,7 @@ private:
 	}
 
 public:
-	void CSV_2_XML(std::string path)
+	void CSVToXML(std::string path)
 	{
 		std::vector<std::string> tags;
 		std::vector<std::string> rows;
@@ -65,6 +65,5 @@ int Convert::ctr;
 
 int main() {
 	Convert foo;
-	std::string path = "";
-	foo.CSV_2_XML(path);
+	foo.CSVToXML("C:\\Users\\gmano\\Desktop\\csv_xml\\csv.csv");
 }
