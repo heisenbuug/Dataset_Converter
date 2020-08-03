@@ -59,7 +59,7 @@ class Convert
 	}
 
 public:
-	void csvTOxml(std::string path)
+	void convert(std::string path)
 	{
 		csvxmlHelper(path);
 	}
@@ -68,5 +68,5 @@ public:
 
 int main() {
 	Convert foo;
-	foo.csvTOxml("C:\\Users\\gmano\\Desktop\\csv_xml\\csv.csv");
+	foo.convert("C:\\Users\\gmano\\Desktop\\csv_xml\\csv.csv");
 }
