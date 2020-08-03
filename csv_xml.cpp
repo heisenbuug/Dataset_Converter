@@ -65,5 +65,6 @@ int Convert::ctr;
 
 int main() {
 	Convert foo;
-	foo.CSV_2_XML("C:\\Users\\gmano\\Desktop\\csv_xml\\csv.csv");
+	std::string path = "";
+	foo.CSV_2_XML(path);
 }
