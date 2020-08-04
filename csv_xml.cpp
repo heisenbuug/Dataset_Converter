@@ -4,9 +4,11 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/property_tree/json_parser.hpp>
 #include <boost/tokenizer.hpp>
 #include <string>
 #include <fstream>
+#include <unordered_map>
 
 
 using namespace boost::property_tree;
@@ -14,18 +16,16 @@ using namespace boost;
 
 class Convert
 {
-	void csvxmlHelper(std::string path)
+	void csvxmlHelper(std::string path, std::string to)
 	{
-		static int ctr;
+		//static int ctr;
 		static std::unordered_map<std::string, int> fileNames;
 		std::vector<std::string> tags;
 		std::vector<std::string> rows;
 		std::ifstream file(path);
 		std::string line;
 
-		std::getline(file, line);
-
-		auto tokenize = [](std::string line)
+		auto tokenize = [&](std::string line)
 		{
 			std::vector<std::string> col_names;
 
@@ -36,8 +36,9 @@ class Convert
 			return col_names;
 		};
 
-		auto create_XML = [](std::vector<std::string>& tags, std::vector<std::string> rows)
+		auto create_XML = [&](std::vector<std::string>& tags, std::vector<std::string> rows)
 		{
+			static int ctr;
 			ptree XMLobjectL;
 			std::string tag, value;
 
@@ -47,26 +48,55 @@ class Convert
 				boost::tie(tag, value) = i;
 				XMLobjectL.put("annotation.object." + tag, value);
 			}
-			write_xml("C:\\Users\\gmano\\Desktop\\csv_xml\\" + std::to_string(ctr) + ".xml", XMLobjectL, std::locale(),
-				xml_writer_make_settings<ptree::key_type>(' ', 1u));
+
+		write_xml(std::to_string(ctr) + ".xml", XMLobjectL, std::locale(),
+			xml_writer_make_settings<ptree::key_type>(' ', 1u));
+
 			ctr++;
 		};
 
-		tags = tokenize(line);
+		auto create_JSON = [&](std::vector<std::string>& tags, std::vector<std::string> rows)
+		{
+			static int ctr;
+			ptree XMLobjectL;
+			std::string tag, value;
 
-		while (std::getline(file, line))
-			create_XML(tags, tokenize(line));
+			for (auto i : boost::combine(tags, rows))
+			{
+				//tag contains tags, value contains corresponding values
+				boost::tie(tag, value) = i;
+				XMLobjectL.put("annotation.object." + tag, value);
+			}
+
+			write_json(std::to_string(ctr) + ".json", XMLobjectL);
+			ctr++;
+		};
+
+		std::getline(file, line);
+		tags = tokenize(line);
+		
+		if (to == "xml")
+			while (std::getline(file, line))
+				create_XML(tags, tokenize(line));
+
+		else if (to == "json")
+			while (std::getline(file, line))
+				create_JSON(tags, tokenize(line));
+		
 	}
 
 public:
-	void convert(std::string path)
+	void convert(std::string path, std::string to)
 	{
-		csvxmlHelper(path);
+		csvxmlHelper(path, to);
 	}
 };
 
 
 int main() {
 	Convert foo;
-	foo.convert("C:\\Users\\gmano\\Desktop\\csv_xml\\csv.csv");
+
+	foo.convert("path_to_csv_file.csv", "xml");
+	foo.convert("path_to_csv_file.csv", "json");
+
 }
